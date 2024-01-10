@@ -1,5 +1,5 @@
-const { Thought } = require('../../src/models/Thought');
-const {User} = require('../models/User')
+const Thought = require('../../src/models/Thought');
+const User = require('../models/User')
 
 const thoughtController = {
   // Get all thoughts
@@ -30,19 +30,22 @@ const thoughtController = {
   // Create a thought
   createThought: async (req, res) => {
     try {
-      const newThought = await Thought.create(req.body);
-      const user = await User.findOneAndUpdate(
+      const dbThoughtData = await Thought.create(req.body);
+
+      const dbUserData = await User.findOneAndUpdate(
         { _id: req.body.userId },
-        { $push: { thoughts: newThought._id } },
+        { $push: { thoughts: dbThoughtData._id } },
         { new: true }
       );
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+
+      if (!dbUserData) {
+        return res.status(404).json({ message: 'Thought created but no user with this id!' });
       }
-      res.status(201).json({ message: 'Thought created successfully' });
+
+      res.json({ message: 'Thought successfully created!' });
     } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Failed to create the thought' });
+      console.log(err);
+      res.status(500).json(err);
     }
   },
 
