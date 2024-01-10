@@ -1,5 +1,6 @@
 const { User } = require('../models/User');
 const { Thought } = require('../models/Thought');
+const dateFormat = require('../../utils/dateFormat')
 
 
 const userController = {

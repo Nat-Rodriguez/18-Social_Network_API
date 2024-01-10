@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./src/config/connection');
 const routes = require('./src/routes');
+const dateFormat = require('./utils/dateFormat')
 
 
 const PORT = process.env.PORT || 3001;
